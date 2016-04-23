@@ -2,14 +2,16 @@
 CXX = g++ -std=gnu++11
 required_libs = -lgps -lpthread -I . -pthread
 
-all: module
+module: 
+	$(CXX) $(required_libs) $(debug_flags) -c gps_sensor.cpp gps_sensor.hpp
+
+example: module
+	$(CXX) $(required_libs) $(debug_flags) -o gps_sensor_test gps.cpp gps_sensor.o
 
 debug: debug_flags = -ggdb -O0
 debug: module
 
-module: 
-	$(CXX) $(required_libs) $(debug_flags) -c gps_sensor.cpp gps_sensor.hpp
-	$(CXX) $(required_libs) $(debug_flags) -o gps_sensor_test 	gps.cpp	gps_sensor.o
+all: module example 
 
 clean:
 	rm gps_sensor.o&
