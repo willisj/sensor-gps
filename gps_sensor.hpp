@@ -20,11 +20,12 @@ class gps_res{
 		struct gps_data_t newdata;
 		pthread_t *gps_thread;
 		std::mutex newdata_mtex;
+        bool data_changed;
 	public:
 		gps_res(void);
 		bool poll_gps();
 		void thread_gps();
-		void get_gps_data(struct gps_data_t *dest);
+		bool get_gps_data(struct gps_data_t *dest);
 };
 
 

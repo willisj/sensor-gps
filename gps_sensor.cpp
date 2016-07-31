@@ -13,6 +13,8 @@ gps_res::gps_res(void): gps_rec("localhost", DEFAULT_GPSD_PORT){
 		std::cerr << "No GPSD running.\n";
 		exit(1);
 	}
+
+    this->data_changed = false;
 }
 
 
@@ -30,15 +32,22 @@ bool gps_res::poll_gps(){
 	// copy the data
 	this->newdata_mtex.lock();
 	memcpy(&(this->newdata), tmp_gps_data, sizeof(gps_data_t));	
+    this->data_changed = false;
 	this->newdata_mtex.unlock();
 	
 	return true;
 }
 
-void gps_res::get_gps_data(struct gps_data_t *dest){
+bool gps_res::get_gps_data(struct gps_data_t *dest){
+    if (!this->data_changed)
+        return false;
+
 	this->newdata_mtex.lock();
 	memcpy(dest, &(this->newdata), sizeof(gps_data_t));	
+    this->data_changed = false;
 	this->newdata_mtex.unlock();
+
+    return true;
 }
 
 static void * gps_loop(void *data){
