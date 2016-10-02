@@ -10,7 +10,7 @@
 int main(void)
 {
 	
-	gps_res gps; 
+	gps_res gps(DEFAULT_GPSD_PORT); 
 	struct gps_data_t newdata;
 	
 	std::cout << "Starting GPS thread" << std::endl;

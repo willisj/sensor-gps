@@ -8,7 +8,7 @@
 
 #include "gps_sensor.hpp"
 
-gps_res::gps_res(void): gps_rec("localhost", DEFAULT_GPSD_PORT){
+gps_res::gps_res(char * port): gps_rec("localhost", port){
 	if (this->gps_rec.stream(WATCH_ENABLE|WATCH_JSON) == NULL) {
 		std::cerr << "No GPSD running.\n";
 		exit(1);
@@ -32,7 +32,7 @@ bool gps_res::poll_gps(){
 	// copy the data
 	this->newdata_mtex.lock();
 	memcpy(&(this->newdata), tmp_gps_data, sizeof(gps_data_t));	
-    this->data_changed = false;
+    this->data_changed = true;
 	this->newdata_mtex.unlock();
 	
 	return true;

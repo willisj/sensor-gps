@@ -22,7 +22,7 @@ class gps_res{
 		std::mutex newdata_mtex;
         bool data_changed;
 	public:
-		gps_res(void);
+		gps_res(char * port);
 		bool poll_gps();
 		void thread_gps();
 		bool get_gps_data(struct gps_data_t *dest);
